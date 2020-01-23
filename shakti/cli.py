@@ -3,9 +3,11 @@ shakti
  
 Usage:
   shakti upload <filepath>
+  shakti list <listtype>
 
 Examples:
   shakti upload ~/Downloads/mnist_model.pkl 
+  shakti list models
  
 Help:
   For help using this tool, please open an issue on the Github repository:
@@ -24,12 +26,9 @@ def main():
     """Main CLI entrypoint."""
     load_dotenv()
     options = docopt(__doc__)
-    print("!!!!", options)
-    print("creds", os.environ["GOOGLE_APPLICATION_CREDENTIALS"])
+    print(options)
     for cmd, value in options.items():
-        print("->", cmd, value)
-        if cmd in CMDS:
-            print("has cmd", cmd)
+        if value and cmd in CMDS:
             getattr(CMDS[cmd](), cmd)(**options)
             break
         # if hasattr(shakti.commands, k):
