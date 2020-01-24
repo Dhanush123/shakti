@@ -1,9 +1,14 @@
+from shakti.constants import GCS_BUCKET_NAME
+
 from google.cloud import storage
 import os
-import sys
 
-from ..more_constants import GCS_BUCKET_NAME
+# from ..constants import GCS_BUCKET_NAME
+
 from ..utilities import name_from_path
+import shakti
+print("gcs", shakti, dir(shakti))
+# GCS_BUCKET_NAME = "SADSADFASDFSAFASFAS"
 
 
 def gcs_bucket_upload(file_path):

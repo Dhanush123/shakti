@@ -19,7 +19,10 @@ from docopt import docopt
 from dotenv import load_dotenv
 import os
 
-from .constants import CMDS
+from shakti.commands.upload.main import Upload
+from shakti.commands.list.main import List
+
+CMDS = {"upload": Upload, "list": List}
 
 
 def main():
