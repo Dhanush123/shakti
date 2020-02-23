@@ -3,12 +3,8 @@ from shakti.constants import GCS_BUCKET_NAME
 from google.cloud import storage
 import os
 
-# from ..constants import GCS_BUCKET_NAME
-
 from ..utilities import name_from_path
 import shakti
-print("gcs", shakti, dir(shakti))
-# GCS_BUCKET_NAME = "SADSADFASDFSAFASFAS"
 
 
 def gcs_bucket_upload(file_path):
@@ -58,6 +54,7 @@ def gcs_list_files(prefix, delimiter=None):
     # Note: Client.list_blobs requires at least package version 1.17.0.
     # https://cloud.google.com/storage/docs/listing-objects
 
+    print("prefix", prefix)
     storage_client = storage.Client()
     bucket = storage_client.bucket(os.environ[GCS_BUCKET_NAME])
 
