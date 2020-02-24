@@ -29,14 +29,15 @@ setup(
         'Natural Language :: English',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8.1',
     ],
     keywords='cli',
-    packages=find_packages(exclude=['docs']),
-    install_requires=['docopt'],
+    packages=find_packages(),
+    # install_requires=['docopt'],
     entry_points={
         'console_scripts': [
             'shakti=shakti.cli:main',
         ],
-    }
+    },
+    python_requires='>=3.0'
 )

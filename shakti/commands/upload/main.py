@@ -1,9 +1,5 @@
-from ...gcp_utils.googlebucket import gcs_bucket_upload
+from shaktiutils.gcp_utils.googlebucket import gcs_file_upload
 
 
-def upload(file_path, **kwargs):
-    cloud = kwargs.get("cloud", "gcp")
-    if cloud == "gcp":
-        gcs_bucket_upload(file_path)
-    else:
-        print("Other clouds not currently supported")
+def upload(file_path, file_type="models"):
+    gcs_file_upload(file_path, file_type)
