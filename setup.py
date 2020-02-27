@@ -22,12 +22,11 @@ setup(
     url='https://github.com/Dhanush123/shakti',
     author='Dhanush Patel',
     author_email='dhanushpatel101@gmail.com',
-    license='have not picked a license yet',
+    license='MIT',
     classifiers=[
         'Intended Audience :: Developers',
         'Topic :: Utilities',
         'Natural Language :: English',
-        'Operating System :: OS Independent',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.8.1',
     ],

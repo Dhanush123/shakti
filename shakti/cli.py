@@ -1,5 +1,4 @@
 import fire
-from dotenv import load_dotenv
 import os
 
 from shakti.commands.upload.main import upload
