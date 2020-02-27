@@ -60,20 +60,3 @@ def deploy_container(model_name, region, auth):
         run_bash_cmd(deploy_cmd)
     except:
         raise
-
-    # TODO: if not use cloudbuild.yaml for CD from GitHub, remove this function & the yaml file
-    # def get_build_files():
-    #     data_dir = os.path.join(os.path.dirname(__file__),
-    #                             "commands", "deploy_templates", "docker", "other")
-    #     cloudbuild_name = "cloudbuild.yaml"
-    #     cloudbuild_path = os.path.join(data_dir, cloudbuild_name)
-    #     cloudbuild_data = None
-    #     with open(cloudbuild_path, 'r') as file:
-    #         cloudbuild_data = file.read()
-
-    #     # Replace the target string
-    #     cloudbuild_data = cloudbuild_data.replace('ram', 'abcd')
-
-    #     # Write the file out again
-    #     with open('file.txt', 'w') as file:
-    #         file.write(filedata)
