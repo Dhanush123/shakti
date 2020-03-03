@@ -8,7 +8,7 @@ WORKDIR $APP_HOME
 
 #workaround: https://github.com/moby/moby/issues/28617
 ADD .env /app
-RUN cat /app/.env >> /etc/environment
+RUN cat .env >> /etc/environment
 
 ##install required files
 

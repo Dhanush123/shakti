@@ -13,8 +13,7 @@ model = None
 def load_resources():
     '''Flask template is currently only for scikit-learn models'''
     if not model:
-        model_path = gcs_download_file(os.environ.get("MODEL_PATH"))
-        model = load(model_path)
+        model = load(os.environ["MODEL_PATH"])
 
 
 def transform_data(input_data):
