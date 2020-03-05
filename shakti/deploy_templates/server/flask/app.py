@@ -22,11 +22,10 @@ def transform_data(input_data):
 
 
 @app.route('/')
-def predict(input_data):
+def predict(input_data, methods=['POST']):
     transformed_data = transform_data(input_data)
     prediction = model.predict(transformed_data)
     return jsonify({"prediction": prediction})
-
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))

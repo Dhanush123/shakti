@@ -6,21 +6,19 @@ FROM python:3.8.1-slim
 ENV APP_HOME /app
 WORKDIR $APP_HOME
 
-#workaround: https://github.com/moby/moby/issues/28617
-ADD .env /app
-RUN cat .env >> /etc/environment
+# https://github.com/moby/moby/issues/28617
+#*COPY_ENV_VARS_HERE*
 
-##install required files
 
-#must run deploy command from folder containing server code
+# must run deploy command from folder containing server code
 COPY . ./
 
 # Install production dependencies.
-RUN pip install Flask gunicorn
+RUN pip install Flask gunicorn joblib python-dotenv numpy scikit-learn
 
 # Run the web service on container startup. Here we use the gunicorn
 # webserver, with one worker process and 2 threads.
 # For environments with multiple CPU cores, increase the number of workers
 # to be equal to the cores available.
-#to make app:app true, flask server variable name (left side of :) must be app
+# to make app:app true, flask server variable name (left side of :) must be app
 CMD exec gunicorn --bind :$PORT --workers 1 --threads 2 app:app
