@@ -27,5 +27,6 @@ def predict(input_data, methods=['POST']):
     prediction = model.predict(transformed_data)
     return jsonify({"prediction": prediction})
 
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))
