@@ -1,4 +1,4 @@
-from shaktiutils.gcp_utils.googlebucket import gcs_file_upload
+from shakti.utils.gcp.googlebucket import gcs_file_upload
 
 
 def upload(file_path, file_type="models"):

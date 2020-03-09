@@ -31,8 +31,7 @@ setup(
         'Programming Language :: Python :: 3.8.1',
     ],
     keywords='cli',
-    packages=find_packages(),
-    # install_requires=['docopt'],
+    packages=['shakti'],
     entry_points={
         'console_scripts': [
             'shakti=shakti.cli:main',
