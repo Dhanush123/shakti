@@ -90,5 +90,6 @@ def gcs_download_file(source_file_path):
                 source_file_path, destination_file_name
             )
         )
+        return destination_file_name
     except FileNotFoundError:
         print("The file either doesn't exist in the bucket or hasn't been specified")

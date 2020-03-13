@@ -1,6 +1,7 @@
 import ntpath
 import subprocess
 import re
+import os
 
 
 def file_from_path(path):
@@ -21,3 +22,7 @@ def run_bash_cmd(cmd):
 def filter_alpha(string):
     regex = re.compile('[^a-zA-Z]')
     return regex.sub('', string)
+
+
+def set_cwd():
+    os.chdir(os.getcwd())
