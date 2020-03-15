@@ -4,20 +4,27 @@ import subprocess
 from dotenv.main import dotenv_values
 from pathlib import Path
 
-from shakti.utils.constants import PROJECT_ID, DOCKER_ENV_VARS_PLACEMENT, DOCKERFILE, DOCKERIGNORE, MODEL_ROUTE
+from shakti.utils.constants import PROJECT_ID, DOCKER_ENV_VARS_PLACEMENT, DOCKERFILE, DOCKERIGNORE, MODEL_ROUTE, CONTAINER_ERROR, TF, CLOUDBUILD, TF_SERVING_FOLDER
 from shakti.utils.utilities import run_bash_cmd
 
 
-def get_container_files(server_type):
-    data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                            "..", "deploytemplates", "docker", server_type))
-    dockerfile_path = os.path.join(data_dir, DOCKERFILE)
-    dockerignore_path = os.path.join(data_dir, DOCKERIGNORE)
-    # files will be overwritten if exist
+def get_container_files(model_type):
+    docker_dir = os.path.abspath(os.path.join(os.path.dirname(__file__),
+                                              "..", "deploytemplates", "docker", model_type))
+    dockerfile_path = os.path.join(docker_dir, DOCKERFILE)
+    dockerignore_path = os.path.join(docker_dir, DOCKERIGNORE)
 
-    shutil.copy(dockerfile_path,  os.path.join(os.getcwd(), DOCKERFILE))
-    shutil.copy(dockerignore_path,  os.path.join(
-        os.getcwd(), DOCKERIGNORE))
+    # files will be overwritten if exist
+    shutil.copy(dockerfile_path, os.path.join(os.getcwd(), DOCKERFILE))
+
+    if os.path.exists(dockerignore_path):
+        shutil.copy(dockerignore_path, os.path.join(os.getcwd(), DOCKERIGNORE))
+
+    # if model_type == TF:
+    #     buildconfig_dir = os.path.abspath(os.path.join(os.path.dirname(__file__),
+    #                                                    "..", "deploytemplates", "buildconfig", TF))
+    #     tf_yaml_path = os.path.join(buildconfig_dir, CLOUDBUILD)
+    #     shutil.copy(tf_yaml_path, os.path.join(os.getcwd(), CLOUDBUILD))
 
 
 def add_env_to_dockerfile():
@@ -36,7 +43,7 @@ def add_env_to_dockerfile():
             modified_file.write(line)
 
 
-def build_container(model_id):
+def build_container(model_id, yaml=False):
     # https://stackoverflow.com/questions/48066114/execute-bash-commands-python-way
     # https://stackoverflow.com/questions/52415779/python-run-bash-commands-sequentially
     # https://cloud.google.com/run/docs/quickstarts/build-and-deploy
@@ -45,9 +52,14 @@ def build_container(model_id):
     try:
         imagebuild_cmd = "gcloud builds submit --tag gcr.io/{}/{}".format(
             os.environ[PROJECT_ID], model_id)
-        output, error = run_bash_cmd(imagebuild_cmd)
+        run_bash_cmd(imagebuild_cmd)
+        # if yaml:
+        #     build_and_deploy_cmd = "gcloud builds submit --config cloudbuild.yaml --substitutions _IMAGE_NAME={}".format(
+        #         image_name)
+        #     run_bash_cmd(build_and_deploy_cmd)
+        # else:
     except:
-        raise Exception("Something went wrong in building the container.")
+        raise Exception(CONTAINER_ERROR)
 
 
 def deploy_container(model_id, region, auth):
@@ -59,4 +71,17 @@ def deploy_container(model_id, region, auth):
             "Make predictions by appending /{} to the deployment url above.".format(
                 os.getenv(MODEL_ROUTE, "")))
     except:
-        raise Exception("Something went wrong in deploying the container.")
+        raise Exception(CONTAINER_ERROR)
+
+
+def add_modelfilename_to_dockerfile(file_name, model_type):
+    dockerfile_path = os.path.join(os.getcwd(), DOCKERFILE)
+
+    with open(dockerfile_path, "r") as original_file:
+        buf = original_file.readlines()
+
+    with open(dockerfile_path, "w") as modified_file:
+        for line in buf:
+            if line.find("TF_SERVING_FOLDER"):
+                line = line.replace("TF_SERVING_FOLDER", TF_SERVING_FOLDER)
+            modified_file.write(line)

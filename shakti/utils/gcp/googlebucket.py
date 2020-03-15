@@ -80,7 +80,7 @@ def gcs_download_file(source_file_path):
         bucket = storage_client.bucket(os.environ[GCS_BUCKET_NAME])
         blob = bucket.blob(source_file_path)
         model_file_name = source_file_path.rsplit('/', 1)[1]
-        # current will only download to current directory
+        # currently will only download to current directory
         os.chdir(os.getcwd())
         destination_file_name = os.getcwd()+"/"+model_file_name
         blob.download_to_filename(destination_file_name)

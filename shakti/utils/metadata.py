@@ -1,6 +1,14 @@
+import os
 from joblib import dump, load
+import shutil
+
+from tensorflow import keras
+
 from shakti.utils.gcp.firebase import initialize_db
 from shakti.utils.constants import SKLEARN
+from shakti.utils.constants import TF
+from shakti.utils.utilities import get_filename_noext, replace_tuples_with_lists
+from shakti.utils.tf import convert_keras_to_tf
 
 
 def upload_model_metadata(local_model_path, model_id, model_type):
@@ -18,4 +26,11 @@ def get_model_metadata(local_model_path, model_type):
         metadata["library_version"] = model.__getstate__()['_sklearn_version']
         metadata["model_type"] = type(model).__name__
         metadata["hyperparameters"] = model.get_params()
+    elif model_type == TF:
+        model = keras.models.load_model(local_model_path)
+        metadata["model_library"] = TF
+        # need to stringify b/c Firestore current doesn't support storing tuples which are used for layer shapes
+        metadata["config"] = str(model.get_config())
+        if local_model_path.find("h5"):
+            convert_keras_to_tf(model, local_model_path)
     return metadata
