@@ -11,7 +11,8 @@ RUN apt-get update && \
 # Copy the exporter models. Directory pattern should be /<model>/<version>
 # Only the latest version is run by the tensorflow serving
 # Take care of the number of model in exporter directory, can grow your container. 
-COPY TF_SERVING_FOLDER /models/TF_SERVING_FOLDER
+RUN mkdir -p /models
+ADD TF_SERVING_FOLDER /models/TF_SERVING_FOLDER
 
 # Serve the model on REST API port define by Cloud Run
-CMD tensorflow_model_server --port=8500 --rest_api_port=${PORT} model_base_path=/models/TF_SERVING_FOLDER
+CMD tensorflow_model_server --port=8500 --rest_api_port=${PORT} --model_base_path=/models/TF_SERVING_FOLDER
