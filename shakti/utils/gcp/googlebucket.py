@@ -8,7 +8,7 @@ from shakti.utils.constants import GCS_BUCKET_NAME
 from shakti.utils.gcp.auth import get_env_creds
 
 
-def gcs_file_upload(file_path, file_type):
+def gcs_file_upload(file_type, file_path):
     """Uploads a blob to the bucket."""
     # file_path = "local/path/to/file"
     # GCS_BUCKET_NAME = "bucketname"

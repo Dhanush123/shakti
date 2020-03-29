@@ -11,3 +11,6 @@ TF = "tf"
 TF_SERVING_FOLDER = "tf_model"
 CONTAINER_ERROR = "Something went wrong in building the container."
 CLOUDBUILD = "cloudbuild.yaml"
+DATA_FILE_EXTS = [".csv", ".txt"]
+MODEL_FILE_EXTS = ["tf", ".pb", ".h5", ".joblib", ".pkl"]
+INFRA_FILE_EXTS = [".dockerignore", "Dockerfile"]
