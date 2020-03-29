@@ -24,11 +24,8 @@ def get_fileext(filename):
 
 
 def run_bash_cmd(cmd):
-    process = subprocess.Popen(
-        cmd.split(), stdout=subprocess.PIPE)
-    # process.wait()
-    output, error = process.communicate()
-    return output, error
+    process = subprocess.run(cmd, capture_output=True, shell=True)
+    return process.stdout, process.stderr
 
 
 def filter_alpha(string):
@@ -53,7 +50,6 @@ def cleanup_postdeploy():
     set_cwd()
     dir_contents = os.listdir(os.getcwd())
     for item in dir_contents:
-        print(item)
         if any([item.endswith(ext) for ext in DATA_FILE_EXTS]) or any([item.endswith(ext) for ext in MODEL_FILE_EXTS]) or any([item.endswith(ext) for ext in INFRA_FILE_EXTS]):
             if os.path.isfile(item):
                 os.remove(item)

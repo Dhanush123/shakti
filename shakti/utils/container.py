@@ -47,17 +47,11 @@ def build_container(model_id, yaml=False):
     # https://stackoverflow.com/questions/48066114/execute-bash-commands-python-way
     # https://stackoverflow.com/questions/52415779/python-run-bash-commands-sequentially
     # https://cloud.google.com/run/docs/quickstarts/build-and-deploy
-    # TODO: revist this if output & error don't print out
     # running bash cmd in python here, need to do this b/c there isn't a python sdk for this yet
     try:
         imagebuild_cmd = "gcloud builds submit --tag gcr.io/{}/{}".format(
             os.environ[PROJECT_ID], model_id)
         run_bash_cmd(imagebuild_cmd)
-        # if yaml:
-        #     build_and_deploy_cmd = "gcloud builds submit --config cloudbuild.yaml --substitutions _IMAGE_NAME={}".format(
-        #         image_name)
-        #     run_bash_cmd(build_and_deploy_cmd)
-        # else:
     except:
         raise Exception(CONTAINER_ERROR)
 

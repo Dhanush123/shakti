@@ -13,7 +13,9 @@ def gcp_auth():
             "utf-8") if auth_output else auth_output
         auth_error = auth_error.decode(
             "utf-8") if auth_error else auth_error
-        if (auth_output and auth_output.find("No credentialed accounts.") != -1) or auth_error:
+        print("ao", auth_output)
+        print("ae", auth_error)
+        if (auth_output and auth_output.find("No credentialed accounts.") != -1):
             login_cmd = "gcloud auth login"
             login_output, login_error = run_bash_cmd(login_cmd)
     except:
@@ -28,7 +30,7 @@ def gcp_setproject():
     error = error.decode(
         "utf-8") if error else error
     project_id = os.environ[PROJECT_ID]
-    if output.find(project_id) == -1 or error:
+    if (output and int(output.find(project_id)) == -1) or error:
         config_cmd = "gcloud config set project {}".format(project_id)
         run_bash_cmd(config_cmd)
 
