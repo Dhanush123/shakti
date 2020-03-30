@@ -20,12 +20,6 @@ def get_container_files(model_type):
     if os.path.exists(dockerignore_path):
         shutil.copy(dockerignore_path, os.path.join(os.getcwd(), DOCKERIGNORE))
 
-    # if model_type == TF:
-    #     buildconfig_dir = os.path.abspath(os.path.join(os.path.dirname(__file__),
-    #                                                    "..", "deploytemplates", "buildconfig", TF))
-    #     tf_yaml_path = os.path.join(buildconfig_dir, CLOUDBUILD)
-    #     shutil.copy(tf_yaml_path, os.path.join(os.getcwd(), CLOUDBUILD))
-
 
 def add_env_to_dockerfile():
     env_path = Path(os.path.join(os.getcwd(), ".env"))
@@ -64,6 +58,7 @@ def deploy_container(model_id, region, auth):
         print(
             "Make predictions by appending /{} to the deployment url above.".format(
                 os.getenv(MODEL_ROUTE, "")))
+
     except:
         raise Exception(CONTAINER_ERROR)
 

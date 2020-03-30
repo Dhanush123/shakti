@@ -1,24 +1,30 @@
-
+import os
 from datetime import datetime
 
 from shakti.utils.gcp.googlebucket import gcs_download_file
 from shakti.utils.gcp.auth import gcp_auth, gcp_setproject
-from shakti.utils.utilities import file_from_path, run_bash_cmd, filter_alpha, get_filename_noext, cleanup_postdeploy
+from shakti.utils.utilities import get_env_creds, file_from_path, run_bash_cmd, filter_alpha, get_filename_noext, cleanup_postdeploy
 from shakti.utils.container import get_container_files, add_env_to_dockerfile, build_container, deploy_container, add_modelfilename_to_dockerfile
 from shakti.utils.metadata import upload_model_metadata
-from shakti.utils.constants import SKLEARN, TF
+from shakti.utils.constants import SKLEARN, TF, GCP_REGION, CLOUD_RUN_AUTH, CLOUD_RUN_DEFAULT_AUTH, GCP_DEFAULT_REGION
 
 
-def deploy(model_type, model_path, region="us-east1", auth="--allow-unauthenticated"):
+def deploy(model_type, model_path, **kwargs):
     '''
     model_path is path inside cloud bucket, not local path
     '''
     try:
+        get_env_creds()
         file_name = get_filename_noext(model_path)
         model_name = filter_alpha(file_name)
         date = str(datetime.now()).replace(
             ".", "-").replace(":", "-").replace(" ", "-")
         model_id = "{}-{}".format(model_name, date)
+
+        region = kwargs.get(GCP_REGION, os.environ.get(
+            GCP_REGION, GCP_DEFAULT_REGION))
+        auth = kwargs.get(CLOUD_RUN_AUTH, os.environ.get(
+            CLOUD_RUN_AUTH, CLOUD_RUN_DEFAULT_AUTH))
 
         local_model_path = gcs_download_file(model_path)
 

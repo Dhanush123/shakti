@@ -2,8 +2,20 @@ import ntpath
 import subprocess
 import re
 import os
+import shutil
+
+from dotenv import load_dotenv, find_dotenv
 
 from shakti.utils.constants import DATA_FILE_EXTS, MODEL_FILE_EXTS, INFRA_FILE_EXTS
+
+
+def get_env_creds():
+    try:
+        os.chdir(os.getcwd())
+        dotenv_path = os.path.join(os.getcwd(), '.env')
+        load_dotenv(dotenv_path=dotenv_path)
+    except:
+        raise AUTH_ERROR
 
 
 def file_from_path(path):
@@ -24,8 +36,9 @@ def get_fileext(filename):
 
 
 def run_bash_cmd(cmd):
-    process = subprocess.run(cmd, capture_output=True, shell=True)
-    return process.stdout, process.stderr
+    process = subprocess.run(
+        cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+    return process.stdout
 
 
 def filter_alpha(string):
@@ -54,4 +67,4 @@ def cleanup_postdeploy():
             if os.path.isfile(item):
                 os.remove(item)
             elif os.path.isdir(item):
-                os.removedirs(item)
+                shutil.rmtree(item)
