@@ -3,10 +3,11 @@ import subprocess
 import re
 import os
 import shutil
+from datetime import datetime
 
 from dotenv import load_dotenv, find_dotenv
 
-from shakti.utils.constants import DATA_FILE_EXTS, MODEL_FILE_EXTS, INFRA_FILE_EXTS
+from shakti.utils.constants import DATA_FILE_EXTS, MODEL_FILE_EXTS, INFRA_FILE_EXTS, AUTH_ERROR
 
 
 def get_env_creds():
@@ -38,6 +39,7 @@ def get_fileext(filename):
 def run_bash_cmd(cmd):
     process = subprocess.run(
         cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+    print(process.stdout)
     return process.stdout
 
 
@@ -68,3 +70,8 @@ def cleanup_postdeploy():
                 os.remove(item)
             elif os.path.isdir(item):
                 shutil.rmtree(item)
+
+
+def get_date_for_id():
+    return str(datetime.now()).replace(
+        ".", "-").replace(":", "-").replace(" ", "-")

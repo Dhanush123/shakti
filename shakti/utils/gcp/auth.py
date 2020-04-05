@@ -20,7 +20,7 @@ def gcp_setproject():
         list_cmd = "gcloud projects list"
         output = run_bash_cmd(list_cmd)
         project_id = os.environ[PROJECT_ID]
-        if (output and int(output.find(project_id)) == -1) or error:
+        if output and int(output.find(project_id)) == -1:
             config_cmd = "gcloud config set project {}".format(project_id)
             run_bash_cmd(config_cmd)
     except:

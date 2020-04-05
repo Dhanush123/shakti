@@ -5,8 +5,7 @@ import shutil
 from tensorflow import keras
 
 from shakti.utils.gcp.firebase import initialize_db
-from shakti.utils.constants import SKLEARN
-from shakti.utils.constants import TF
+from shakti.utils.constants import SKLEARN, TF, MODELS
 from shakti.utils.utilities import get_filename_noext, replace_tuples_with_lists
 from shakti.utils.tf import convert_keras_to_tf
 
@@ -14,7 +13,7 @@ from shakti.utils.tf import convert_keras_to_tf
 def upload_model_metadata(local_model_path, model_id, model_type):
     db = initialize_db()
     metadata = get_model_metadata(local_model_path, model_type)
-    doc_ref = db.collection("models").document(model_id)
+    doc_ref = db.collection(MODELS).document(model_id)
     doc_ref.set(metadata)
 
 

@@ -16,26 +16,37 @@ with open(join(this_dir, 'README.md'), encoding='utf-8') as file:
 
 setup(
     name='shakti',
+    packages=find_packages(),
     version=__version__,
     description='CLI for the Shakti ML deployment platform written in Python',
     long_description=long_description,
     url='https://github.com/Dhanush123/shakti',
+    download_url='https://github.com/Dhanush123/shakti/archive/0.1.0.tar.gz',
     author='Dhanush Patel',
     author_email='dhanushpatel101@gmail.com',
     license='MIT',
     classifiers=[
         'Intended Audience :: Developers',
         'Topic :: Utilities',
-        'Natural Language :: English',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.8.1',
+        'Programming Language :: Python :: 3'
     ],
     keywords='cli',
-    packages=['shakti'],
     entry_points={
         'console_scripts': [
             'shakti=shakti.cli:main',
         ],
     },
-    python_requires='>=3.0'
+    python_requires='>=3.0',
+    install_requires=[
+        "autopep8",
+        "fire",
+        "firebase-admin",
+        "google-cloud-dataproc",
+        "pylint",
+        "pyspark",
+        "python-dotenv",
+        "rope",
+        "scikit-learn",
+        "tensorflow"
+    ]
 )

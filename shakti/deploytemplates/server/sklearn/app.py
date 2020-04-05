@@ -7,6 +7,7 @@ import sklearn
 import numpy as np
 import glob
 
+from shakti.utils.decorators import log_request, log_response
 from process import preprocess, postprocess
 
 app = Flask(__name__)
@@ -14,6 +15,7 @@ model = None
 
 
 @app.before_request
+@log_request
 def load_resources():
     '''Flask template is currently only for scikit-learn models'''
     load_dotenv()
@@ -22,6 +24,12 @@ def load_resources():
     global model
     if not model:
         load_model()
+
+
+@app.after_request
+@log_response
+def logging(response):
+    return response
 
 
 def load_model():
@@ -37,13 +45,14 @@ def load_model():
         raise Exception
 
 
-@app.route(os.getenv("REST_ENDPOINT", "/"))
-def predict(input_data, methods=['POST']):
+@app.route(os.getenv("REST_ENDPOINT", "/"), methods=["POST"])
+def predict():
+    input_data = request.get_json(force=True)
     transformed_input_data = preprocess(input_data)
     prediction = model.predict(transformed_input_data)
-    transformed_prediction = preprocess(prediction)
+    transformed_prediction = postprocess(prediction)
     return jsonify({"prediction": transformed_prediction})
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
