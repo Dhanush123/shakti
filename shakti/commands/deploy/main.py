@@ -6,7 +6,7 @@ from shakti.utils.utilities import get_env_creds, file_from_path, run_bash_cmd, 
 from shakti.utils.container import get_container_files, add_env_to_dockerfile, build_container, deploy_container, add_modelfilename_to_dockerfile
 from shakti.utils.metadata import upload_model_metadata
 from shakti.commands.upload.main import upload
-from shakti.utils.constants import SKLEARN, TF, GCP_REGION, CLOUD_RUN_AUTH, CLOUD_RUN_DEFAULT_AUTH, GCP_DEFAULT_REGION, CLOUD, LOCAL, MODELS
+from shakti.utils.constants import SKLEARN, TF, GCP_REGION, CLOUD_RUN_AUTH, CLOUD_RUN_DEFAULT_AUTH, GCP_DEFAULT_REGION, CLOUD, LOCAL, MODELS, DEPLOY_ERROR
 
 
 def deploy(model_type, model_location, model_path, **kwargs):
@@ -30,6 +30,7 @@ def deploy(model_type, model_location, model_path, **kwargs):
 
         if model_location == LOCAL:
             upload(MODELS, local_model_path)
+
         if model_type == SKLEARN:
             get_container_files(model_type)
             add_env_to_dockerfile()
@@ -51,4 +52,4 @@ def deploy(model_type, model_location, model_path, **kwargs):
             deploy_container(model_id, region, auth)
         cleanup_postdeploy()
     except:
-        raise Exception("Something went wrong in deploying the model.")
+        raise Exception(DEPLOY_ERROR)

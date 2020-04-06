@@ -4,10 +4,11 @@ import re
 import os
 import shutil
 from datetime import datetime
+import glob
 
 from dotenv import load_dotenv, find_dotenv
 
-from shakti.utils.constants import DATA_FILE_EXTS, MODEL_FILE_EXTS, INFRA_FILE_EXTS, AUTH_ERROR
+from shakti.utils.constants import DATA_FILE_EXTS, MODEL_FILE_EXTS, INFRA_FILE_EXTS, AUTH_ERROR, TRAIN_DIR_PREFIX
 
 
 def get_env_creds():
@@ -75,3 +76,9 @@ def cleanup_postdeploy():
 def get_date_for_id():
     return str(datetime.now()).replace(
         ".", "-").replace(":", "-").replace(" ", "-")
+
+
+def get_train_dir():
+    set_cwd()
+    return list(filter(lambda path: os.path.isdir(
+        path), glob.glob("{}*".format(TRAIN_DIR_PREFIX))))[0]

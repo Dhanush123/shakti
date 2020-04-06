@@ -3,7 +3,7 @@ import os
 from os.path import join, dirname
 from pathlib import Path
 
-from shakti.utils.utilities import get_env_creds, file_from_path
+from shakti.utils.utilities import get_env_creds, file_from_path, set_cwd
 from shakti.utils.constants import GCS_BUCKET_NAME
 
 
@@ -80,7 +80,7 @@ def gcs_download_file(source_file_path):
         blob = bucket.blob(source_file_path)
         model_file_name = source_file_path.rsplit('/', 1)[1]
         # currently will only download to current directory
-        os.chdir(os.getcwd())
+        set_cwd()
         destination_file_name = os.getcwd()+"/"+model_file_name
         blob.download_to_filename(destination_file_name)
 
