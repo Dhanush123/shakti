@@ -53,15 +53,6 @@ def set_cwd():
     os.chdir(os.getcwd())
 
 
-def replace_tuples_with_lists(dictionary):
-    for key, value in dictionary.items():
-        if isinstance(value, tuple):
-            dictionary[key] = list(value)
-        elif isinstance(value, dict):
-            dictionary[key] = replace_tuples_with_lists(dictionary)
-    return dictionary
-
-
 def cleanup_postdeploy():
     set_cwd()
     dir_contents = os.listdir(os.getcwd())
@@ -82,3 +73,10 @@ def get_train_dir():
     set_cwd()
     return list(filter(lambda path: os.path.isdir(
         path), glob.glob("{}*".format(TRAIN_DIR_PREFIX))))[0]
+
+
+def arg_dict_to_list(dictionary):
+    arg_list = []
+    for key, value in dictionary.items():
+        arg_list.extend(["--{}".format(key), value])
+    return arg_dict_to_list

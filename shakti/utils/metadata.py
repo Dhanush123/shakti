@@ -6,7 +6,7 @@ from tensorflow import keras
 
 from shakti.utils.gcp.firebase import initialize_db
 from shakti.utils.constants import SKLEARN, TF, MODELS
-from shakti.utils.utilities import get_filename_noext, replace_tuples_with_lists
+from shakti.utils.utilities import get_filename_noext
 from shakti.utils.tf import convert_keras_to_tf
 
 

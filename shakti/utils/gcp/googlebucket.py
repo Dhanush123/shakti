@@ -7,7 +7,7 @@ from shakti.utils.utilities import get_env_creds, file_from_path, set_cwd
 from shakti.utils.constants import GCS_BUCKET_NAME
 
 
-def gcs_file_upload(file_type, file_path):
+def gcs_file_upload(bucket_name, file_type, file_path):
     """Uploads a blob to the bucket."""
     # file_path = "local/path/to/file"
     # GCS_BUCKET_NAME = "bucketname"
@@ -16,7 +16,7 @@ def gcs_file_upload(file_type, file_path):
         # source and destination file name are kept same
         get_env_creds()
         storage_client = storage.Client()
-        bucket = storage_client.bucket(os.environ[GCS_BUCKET_NAME])
+        bucket = storage_client.bucket(bucket_name)
         file_name = file_from_path(file_path)
         blob = bucket.blob(file_type+"/"+file_name)
         blob.upload_from_filename(file_path)
@@ -25,7 +25,7 @@ def gcs_file_upload(file_type, file_path):
         print("Please set the environment variable {}".format(GCS_BUCKET_NAME))
 
 
-def gcs_list_files(prefix, delimiter=None):
+def gcs_list_files(bucket_name, prefix, delimiter=None):
     """Lists all the blobs in the bucket that begin with the prefix.
 
     This can be used to list all blobs in a "folder", e.g. "public/".
@@ -54,7 +54,7 @@ def gcs_list_files(prefix, delimiter=None):
     # https://cloud.google.com/storage/docs/listing-objects
     get_env_creds()
     storage_client = storage.Client()
-    bucket = storage_client.bucket(os.environ[GCS_BUCKET_NAME])
+    bucket = storage_client.bucket(bucket_name)
 
     files_list = storage_client.list_blobs(
         bucket, prefix=prefix, delimiter=delimiter
