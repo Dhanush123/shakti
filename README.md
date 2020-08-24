@@ -1,5 +1,5 @@
 # shakti
-## ML Deployment Platform
+## ML Deployment Tool
 
 - The goal is to learn ML infrastructure development as well as be able to use this platform in ML side projects and hackathon projects in a public cloud (currently only GCP) at little to no cost (by utilizing free tier services where possible).
 
